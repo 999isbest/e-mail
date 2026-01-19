@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>电子邮箱</title>
+    <!-- 引入字体图标库增强视觉效果 -->
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- 引入现代字体 -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* 全局样式重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Inter", "Microsoft Yahei", Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        a {
+            text-decoration: none;
+            color: #2ec4b6;
+            transition: all 0.3s ease;
+        }
+
+        a:hover {
+            text-decoration: none;
+            color: #7a67ee;
+        }
+
+        /* 邮箱主界面样式 (直接显示) */
+        .email-container {
+            width: 100%;
+            height: 100vh;
+            background: #fff;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 0 20px rgba(0,0,0,0.02);
+        }
+
+        /* 顶部导航栏 - 渐变配色 */
+        .email-header {
+            height: 80px; /* 适配Logo的高度 */
+            background: linear-gradient(to right, #7a67ee, #2ec4b6);
+            color: #fff;
+            padding: 0 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            position: relative;
+            z-index: 10;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+        }
+
+        .email-logo {
+            width: 120px; /* 适配新Logo的视觉尺寸 */
+            height: 60px;
+            object-fit: contain; /* 保证Logo比例不变形 */
+            border-radius: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        .email-logo:hover {
+            transform: scale(1.05); /* hover轻微放大效果 */
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-info {
+            margin-right: 25px;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .user-info i {
+            font-size: 18px;
+            opacity: 0.8;
+        }
+
+        .header-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-left: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .header-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+
+        /* 主体内容区 */
+        .email-main {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        /* 左侧功能栏 */
+        .sidebar {
+            width: 220px;
+            background: #f5f7fa;
+            border-right: 1px solid #e9ecef;
+            padding-top: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .compose-btn {
+            width: 180px;
+            height: 45px;
+            background: linear-gradient(to right, #ff9f43, #ff3c68);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            margin: 0 auto 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 500;
+            box-shadow: 0 4px 12px rgba(255, 159, 67, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .compose-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(255, 159, 67, 0.4);
+        }
+
+        .menu-list {
+            list-style: none;
+            padding: 0 10px;
+        }
+
+        .menu-item {
+            padding: 14px 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            border-radius: 8px;
+            margin-bottom: 5px;
+            color: #495057;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .menu-item:hover {
+            background: #e9ecef;
+            color: #7a67ee;
+            transform: translateX(3px);
+        }
+
+        .menu-item.active {
+            background: linear-gradient(90deg, rgba(122,103,238,0.1), rgba(46,196,182,0.1));
+            border-left: 3px solid #7a67ee;
+            color: #7a67ee;
+            font-weight: 600;
+        }
+
+        .menu-icon {
+            margin-right: 12px;
+            font-size: 18px;
+            width: 20px;
+            text-align: center;
+        }
+
+        /* 邮件列表区 */
+        .email-list-area {
+            width: 380px;
+            border-right: 1px solid #e9ecef;
+            display: flex;
+            flex-direction: column;
+            background: #fff;
+        }
+
+        .list-header {
+            padding: 15px 25px;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f8f9fa;
+        }
+
+        .search-box {
+            width: 220px;
+            height: 38px;
+            padding: 0 15px;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 14px;
+            background: #fff;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .search-box:focus-within {
+            border-color: #7a67ee;
+            box-shadow: 0 0 0 3px rgba(122,103,238,0.1);
+        }
+
+        .email-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 15px;
+        }
+
+        /* 自定义滚动条 */
+        .email-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .email-list::-webkit-scrollbar-track {
+            background: #f1f3f5;
+            border-radius: 3px;
+        }
+
+        .email-list::-webkit-scrollbar-thumb {
+            background: #dee2e6;
+            border-radius: 3px;
+        }
+
+        .email-list::-webkit-scrollbar-thumb:hover {
+            background: #adb5bd;
+        }
+
+        .email-item {
+            padding: 18px 20px;
+            border-radius: 10px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            background: #fff;
+            border: 1px solid #f1f3f5;
+            transition: all 0.3s ease;
+        }
+
+        .email-item:hover {
+            background: #f8f9fa;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+            transform: translateY(-2px);
+        }
+
+        .email-item.unread {
+            background: #e3f2fd;
+            border-left: 4px solid #2ec4b6;
+            font-weight: 500;
+        }
+
+        .email-item.active {
+            background: linear-gradient(90deg, rgba(122,103,238,0.05), rgba(46,196,182,0.05));
+            border: 1px solid rgba(122,103,238,0.2);
+        }
+
+        .email-sender {
+            margin-bottom: 6px;
+            color: #212529;
+            font-size: 15px;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .email-subject {
+            margin-bottom: 6px;
+            color: #495057;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .email-preview {
+            color: #868e96;
+            font-size: 13px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            line-height: 1.4;
+        }
+
+        .email-time {
+            color: #adb5bd;
+            font-size: 12px;
+            font-weight: 400;
+        }
+
+        /* 邮件预览区 */
+        .email-preview-area {
+            flex: 1;
+            padding: 35px;
+            overflow-y: auto;
+            background: #fff;
+        }
+
+        /* 自定义滚动条 */
+        .email-preview-area::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .email-preview-area::-webkit-scrollbar-track {
+            background: #f8f9fa;
+            border-radius: 4px;
+        }
+
+        .email-preview-area::-webkit-scrollbar-thumb {
+            background: #dee2e6;
+            border-radius: 4px;
+        }
+
+        .email-preview-area::-webkit-scrollbar-thumb:hover {
+            background: #adb5bd;
+        }
+
+        .preview-card {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            padding: 40px;
+            border: 1px solid #f1f3f5;
+        }
+
+        .preview-header {
+            margin-bottom: 35px;
+            border-bottom: 1px solid #f1f3f5;
+            padding-bottom: 25px;
+        }
+
+        .preview-subject {
+            font-size: 26px;
+            margin-bottom: 25px;
+            color: #212529;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+        }
+
+        .preview-info {
+            color: #495057;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        .preview-info p {
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .preview-info i {
+            color: #7a67ee;
+            width: 18px;
+            text-align: center;
+        }
+
+        .preview-content {
+            line-height: 1.8;
+            color: #343a40;
+            font-size: 16px;
+            letter-spacing: 0.2px;
+        }
+
+        .preview-content p {
+            margin-bottom: 15px;
+        }
+
+        /* 邮件落款右对齐样式 */
+        .email-signature {
+            text-align: right;
+            margin-top: 20px;
+        }
+
+        /* 无预览内容样式 */
+        .empty-preview {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: #868e96;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .empty-preview i {
+            font-size: 60px;
+            margin-bottom: 20px;
+            color: #dee2e6;
+        }
+
+        .empty-preview h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        .empty-preview p {
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* 刷新按钮旋转动画 */
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .refresh-loading i {
+            animation: rotate 1.5s linear infinite;
+        }
+
+        /* 响应式适配 */
+        @media (max-width: 1200px) {
+            .sidebar {
+                width: 80px;
+            }
+
+            .sidebar .menu-item span:not(.menu-icon) {
+                display: none;
+            }
+
+            .menu-icon {
+                margin-right: 0;
+                font-size: 20px;
+            }
+
+            .compose-btn span {
+                display: none;
+            }
+
+            .compose-btn {
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+            }
+
+            .email-list-area {
+                width: 320px;
+            }
+
+            /* 响应式下调整Logo尺寸 */
+            .email-logo {
+                width: 100px;
+                height: 50px;
+            }
+
+            .email-header {
+                height: 70px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 邮箱主界面 (直接显示) -->
+    <div class="email-container" id="emailMain">
+        <!-- 顶部导航 -->
+        <div class="email-header">
+            <div class="header-left">
+                <!-- 新的邮箱Logo -->
+                <img src="https://p3-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/bb284a03fa5249b09b3339690f380cc9.png~tplv-a9rns2rl98-24:720:720.png?lk3s=8e244e95&rcl=2026011701220809744C7F36DFAD2FCBE9&rrcfp=8a172a1a&x-expires=1769188929&x-signature=WZvhjL9ESbhMZ3%2FUHu2rf7libZY%3D" alt="电子邮箱" class="email-logo">
+            </div>
+            <div class="header-right">
+                <div class="user-info">
+                    <i class="fas fa-user-circle"></i>
+                    <span>你</span>
+                </div>
+                <button class="header-btn">
+                    <i class="fas fa-cog"></i>
+                    <span>设置</span>
+                </button>
+                <button class="header-btn" id="refreshBtn">
+                    <i class="fas fa-sync-alt"></i>
+                    <span>刷新</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- 主体内容 -->
+        <div class="email-main">
+            <!-- 左侧功能栏 -->
+            <div class="sidebar">
+                <button class="compose-btn">
+                    <i class="fas fa-pen-fancy"></i>
+                    <span>写邮件</span>
+                </button>
+                <ul class="menu-list">
+                    <li class="menu-item active">
+                        <span class="menu-icon"><i class="fas fa-inbox"></i></span>
+                        <span>收件箱</span>
+                    </li>
+                    <li class="menu-item">
+                        <span class="menu-icon"><i class="fas fa-paper-plane"></i></span>
+                        <span>已发送</span>
+                    </li>
+                    <li class="menu-item">
+                        <span class="menu-icon"><i class="fas fa-file-alt"></i></span>
+                        <span>草稿箱</span>
+                    </li>
+                    <li class="menu-item">
+                        <span class="menu-icon"><i class="fas fa-trash-alt"></i></span>
+                        <span>已删除</span>
+                    </li>
+                    <li class="menu-item">
+                        <span class="menu-icon"><i class="fas fa-star"></i></span>
+                        <span>星标邮件</span>
+                    </li>
+                    <li class="menu-item">
+                        <span class="menu-icon"><i class="fas fa-ban"></i></span>
+                        <span>垃圾邮件</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- 邮件列表区 -->
+            <div class="email-list-area">
+                <div class="list-header">
+                    <div class="search-box">
+                        <i class="fas fa-search" style="color: #adb5bd;"></i>
+                        <input type="text" style="border: none; outline: none; flex: 1; background: transparent;" placeholder="搜索邮件...">
+                    </div>
+                    <button class="header-btn" style="padding: 6px 12px;">
+                        <i class="fas fa-filter"></i>
+                    </button>
+                </div>
+                <div class="email-list">
+                    <!-- 核心任务邮件 -->
+                    <div class="email-item unread active" data-email-type="task" id="taskEmail">
+                        <div class="email-sender">
+                            <span>网络清朗公益组织</span>
+                            <span class="email-time">09:25</span>
+                        </div>
+                        <div class="email-subject">本月清朗任务委托</div>
+                        <div class="email-preview">近期存在多起由“参考文献”梗引发的网暴事件，现委托你调查该梗的传播、异化过程...</div>
+                    </div>
+                    <!-- 其他可交互邮件 -->
+                    <div class="email-item" data-email-type="normal">
+                        <div class="email-sender">
+                            <span>微信团队</span>
+                            <span class="email-time">昨天</span>
+                        </div>
+                        <div class="email-subject">微信安全中心验证通知</div>
+                        <div class="email-preview">你申请的微信账号验证已通过，可正常使用所有功能...</div>
+                    </div>
+                    <div class="email-item" data-email-type="normal">
+                        <div class="email-sender">
+                            <span>网络清朗组织</span>
+                            <span class="email-time">周一</span>
+                        </div>
+                        <div class="email-subject">委托完成感谢信</div>
+                        <div class="email-preview">感谢你完成本次网络清朗调查任务，你的工作为网络环境治理提供了重要依据...</div>
+                    </div>
+                    <div class="email-item" data-email-type="normal">
+                        <div class="email-sender">
+                            <span>青年志愿者协会</span>
+                            <span class="email-time">上周</span>
+                        </div>
+                        <div class="email-subject">2025年度行政组及活动组义工招募</div>
+                        <div class="email-preview">2025年度义工招募正式启动，诚邀你加入行政组或活动组，共同参与公益事业...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 邮件预览区 -->
+            <div class="email-preview-area" id="previewArea">
+                <!-- 默认显示任务邮件内容 -->
+                <div class="preview-card" id="taskPreview">
+                    <div class="preview-header">
+                        <h2 class="preview-subject">本月清朗任务委托</h2>
+                        <div class="preview-info">
+                            <p><i class="fas fa-paper-plane"></i>发件人：网络清朗公益组织 &lt;qinglang@public.org&gt;</p>
+                            <p><i class="fas fa-clock"></i>时间：2026年1月17日 09:25</p>
+                            <p><i class="fas fa-user"></i>收件人：你 &lt;you@example.com&gt;</p>
+                        </div>
+                    </div>
+                    <div class="preview-content">
+                        <p>尊敬的网络侦探：</p>
+                        <p>近期存在多起由“参考文献”梗引发的网暴事件，现委托你调查该梗的传播、异化过程，厘清玩梗与网暴的边界，揭露恶意引导行为，为清朗网络提供依据。</p>
+                        <!-- 落款右对齐 -->
+                        <div class="email-signature">
+                            <p style="color: #7a67ee; font-weight: 600; margin-bottom: 5px;">网络清朗公益组织</p>
+                            <p style="color: #868e96;">2026年1月17日</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- 空预览模板 (默认隐藏) -->
+                <div class="empty-preview" id="emptyPreview" style="display: none;">
+                    <i class="fas fa-envelope-open"></i>
+                    <h3>暂无邮件预览</h3>
+                    <p>该邮件暂无预览内容，如需查看请联系发件人或检查邮件完整性</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 获取核心元素
+        const taskEmail = document.getElementById('taskEmail');
+        const emailItems = document.querySelectorAll('.email-item');
+        const previewArea = document.getElementById('previewArea');
+        const taskPreview = document.getElementById('taskPreview');
+        const emptyPreview = document.getElementById('emptyPreview');
+        const refreshBtn = document.getElementById('refreshBtn');
+
+        // 邮件点击交互逻辑
+        emailItems.forEach(item => {
+            item.addEventListener('click', function() {
+                // 移除所有邮件的选中状态
+                emailItems.forEach(mi => mi.classList.remove('active'));
+                // 添加当前邮件选中状态
+                this.classList.add('active');
+
+                // 判断邮件类型，显示对应预览内容
+                const emailType = this.getAttribute('data-email-type');
+                if (emailType === 'task') {
+                    // 显示任务邮件预览
+                    taskPreview.style.display = 'block';
+                    emptyPreview.style.display = 'none';
+                } else {
+                    // 隐藏任务邮件预览，显示空预览
+                    taskPreview.style.display = 'none';
+                    emptyPreview.style.display = 'flex';
+                }
+
+                // 添加微动画反馈
+                this.style.transform = 'scale(1.02)';
+                setTimeout(() => {
+                    this.style.transform = 'translateY(-2px) scale(1)';
+                }, 200);
+            });
+        });
+
+        // 刷新按钮动画效果
+        refreshBtn.addEventListener('click', function() {
+            this.classList.add('refresh-loading');
+            // 模拟加载过程
+            setTimeout(() => {
+                this.classList.remove('refresh-loading');
+            }, 1500);
+        });
+
+        // 左侧菜单选中效果
+        const menuItems = document.querySelectorAll('.menu-item');
+        menuItems.forEach(item => {
+            item.addEventListener('click', function() {
+                menuItems.forEach(mi => mi.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
