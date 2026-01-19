@@ -476,6 +476,159 @@
                 height: 70px;
             }
         }
+
+        /* 新增：参考文献梗文字框样式 */
+        .reference-tag {
+            background-color: #e3f2fd; /* 浅蓝色背景 */
+            padding: 2px 6px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            color: #1976d2;
+            border: 1px solid #bbdefb;
+            transition: all 0.2s ease;
+        }
+
+        .reference-tag:hover {
+            background-color: #bbdefb;
+        }
+
+        /* 新增：弹窗内跳转文字框样式 */
+        .jump-tag {
+            background-color: #e3f2fd; /* 淡蓝色背景，和reference-tag保持一致 */
+            padding: 2px 6px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            color: #1976d2;
+            border: 1px solid #bbdefb;
+            transition: all 0.2s ease;
+            display: inline-block; /* 保证文字框只包裹文字 */
+        }
+
+        .jump-tag:hover {
+            background-color: #bbdefb; /* hover时加深背景色 */
+        }
+
+        /* 新增：弹窗样式 - 优化动画效果 */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            /* 修改：优化动画曲线，更自然 */
+            transition:
+                opacity 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+                visibility 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 30px;
+            width: 500px;
+            max-width: 90%;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            /* 修改：初始状态 - 组合动画参数 */
+            transform: translateY(20px) scale(0.95);
+            opacity: 0.8;
+            /* 修改：动画过渡 - 与遮罩层同步 */
+            transition:
+                transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+                opacity 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+                box-shadow 0.3s ease;
+            position: relative;
+        }
+
+        /* 修改：激活状态的弹窗动画 */
+        .modal-overlay.active .modal-content {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+            /* 新增：激活时增强阴影，更有层次感 */
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #212529;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: #868e96;
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            transition: all 0.2s ease;
+        }
+
+        .modal-close:hover {
+            background-color: #f1f3f5;
+            color: #212529;
+        }
+
+        .modal-body {
+            line-height: 1.8;
+            color: #495057;
+            font-size: 16px;
+            padding-bottom: 100px;
+        }
+
+        .modal-body p {
+            margin-bottom: 15px;
+        }
+
+        /* 弹窗右下角图片样式 - 向上移动2像素 */
+        .modal-image {
+            position: absolute;
+            bottom: 22px; /* 从20px改为22px，向上移动2像素 */
+            right: 20px;
+            width: 120px;
+            height: auto;
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            /* 新增：图片单独动画，延迟触发 */
+            opacity: 0;
+            transform: scale(0.9);
+            transition:
+                opacity 0.3s ease 0.2s,
+                transform 0.3s ease 0.2s;
+        }
+
+        /* 新增：激活时图片动画 */
+        .modal-overlay.active .modal-image {
+            opacity: 1;
+            transform: scale(1);
+        }
     </style>
 </head>
 <body>
@@ -602,7 +755,7 @@
                     </div>
                     <div class="preview-content">
                         <p>尊敬的网络侦探：</p>
-                        <p>近期存在多起由“参考文献”梗引发的网暴事件，现委托你调查该梗的传播、异化过程，厘清玩梗与网暴的边界，揭露恶意引导行为，为清朗网络提供依据。</p>
+                        <p>近期存在多起由<span class="reference-tag" id="referenceTag">“参考文献”梗</span>引发的网暴事件，现委托你调查该梗的传播、异化过程，厘清玩梗与网暴的边界，揭露恶意引导行为，为清朗网络提供依据。</p>
                         <!-- 落款右对齐 -->
                         <div class="email-signature">
                             <p style="color: #7a67ee; font-weight: 600; margin-bottom: 5px;">网络清朗公益组织</p>
@@ -620,6 +773,24 @@
         </div>
     </div>
 
+    <!-- 新增：弹窗容器 -->
+    <div class="modal-overlay" id="referenceModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">什么是“参考文献”梗？</h3>
+                <button class="modal-close" id="modalClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>“参考文献”梗最初起源于学术圈，是网友们对学术论文中严谨标注参考文献格式的一种趣味化模仿，常用于网络讨论中要求对方提供观点的依据或来源。</p>
+                <p>当某篇帖子内容逻辑跳跃、难以理解或故意夸张时，网友们会用“标记一处参考文献”<span class="jump-tag" onclick="window.location.href='https://999isbest.github.io/Forum-detail-page-simulation/'">“震撼首发”</span>等评论回应，并模仿学术引用格式标注来源。</p>
+            </div>
+            <!-- 企鹅图片 -->
+            <img src="https://p11-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/b67ebc8dfe91415b98708a1d75880f12.jpg~tplv-a9rns2rl98-24:720:720.image?lk3s=8e244e95&rcl=20260120034314BB81741E9B866CEC7485&rrcfp=8a172a1a&x-expires=1769456595&x-signature=U98wrKLcCmcAj9xjIuoISGjcXrs%3D" alt="标记一处参考文献" class="modal-image">
+        </div>
+    </div>
+
     <script>
         // 获取核心元素
         const taskEmail = document.getElementById('taskEmail');
@@ -628,6 +799,11 @@
         const taskPreview = document.getElementById('taskPreview');
         const emptyPreview = document.getElementById('emptyPreview');
         const refreshBtn = document.getElementById('refreshBtn');
+
+        // 新增：获取弹窗相关元素
+        const referenceTag = document.getElementById('referenceTag');
+        const referenceModal = document.getElementById('referenceModal');
+        const modalClose = document.getElementById('modalClose');
 
         // 邮件点击交互逻辑
         emailItems.forEach(item => {
@@ -673,6 +849,46 @@
                 menuItems.forEach(mi => mi.classList.remove('active'));
                 this.classList.add('active');
             });
+        });
+
+        // 新增：弹窗交互逻辑
+        // 打开弹窗
+        referenceTag.addEventListener('click', function(e) {
+            e.stopPropagation(); // 阻止事件冒泡
+            // 强制触发重绘，确保动画生效
+            void referenceModal.offsetWidth;
+            referenceModal.classList.add('active');
+            // 禁止页面滚动
+            document.body.style.overflow = 'hidden';
+        });
+
+        // 关闭弹窗
+        function closeModal() {
+            referenceModal.classList.remove('active');
+            // 恢复页面滚动
+            document.body.style.overflow = '';
+            // 可选：等待动画结束后重置样式（避免下次打开有残留）
+            setTimeout(() => {
+                referenceModal.style.opacity = '';
+                referenceModal.querySelector('.modal-content').style.transform = '';
+            }, 400);
+        }
+
+        // 点击关闭按钮关闭弹窗
+        modalClose.addEventListener('click', closeModal);
+
+        // 点击弹窗外部关闭弹窗
+        referenceModal.addEventListener('click', function(e) {
+            if (e.target === referenceModal) {
+                closeModal();
+            }
+        });
+
+        // 按ESC键关闭弹窗
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && referenceModal.classList.contains('active')) {
+                closeModal();
+            }
         });
     </script>
 </body>
