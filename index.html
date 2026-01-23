@@ -22,6 +22,21 @@
             color: #333;
             font-size: 14px;
             line-height: 1.5;
+            /* 新增：页面居中基础样式 */
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 0;
+            margin: 0;
+        }
+
+        /* 新增：外层容器 - 控制页面居中显示 */
+        .page-wrapper {
+            width: 100%;
+            max-width: 1440px; /* 限制最大宽度 */
+            min-height: 100vh;
+            margin: 0 auto; /* 水平居中 */
+            box-shadow: 0 0 30px rgba(0,0,0,0.05); /* 增加阴影提升层次感 */
         }
 
         a {
@@ -477,6 +492,30 @@
             }
         }
 
+        /* 优化移动端适配 */
+        @media (max-width: 768px) {
+            /* 移动端页面完全居中，去除多余间距 */
+            .page-wrapper {
+                box-shadow: none;
+            }
+            
+            .email-header {
+                padding: 0 15px;
+            }
+            
+            .email-preview-area {
+                padding: 15px;
+            }
+            
+            .preview-card {
+                padding: 20px;
+            }
+            
+            .preview-subject {
+                font-size: 20px;
+            }
+        }
+
         /* 新增：参考文献梗文字框样式 */
         .reference-tag {
             background-color: #e3f2fd; /* 浅蓝色背景 */
@@ -632,143 +671,146 @@
     </style>
 </head>
 <body>
-    <!-- 邮箱主界面 (直接显示) -->
-    <div class="email-container" id="emailMain">
-        <!-- 顶部导航 -->
-        <div class="email-header">
-            <div class="header-left">
-                <!-- 新的邮箱Logo -->
-                <img src="https://p3-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/bb284a03fa5249b09b3339690f380cc9.png~tplv-a9rns2rl98-24:720:720.png?lk3s=8e244e95&rcl=2026011701220809744C7F36DFAD2FCBE9&rrcfp=8a172a1a&x-expires=1769188929&x-signature=WZvhjL9ESbhMZ3%2FUHu2rf7libZY%3D" alt="电子邮箱" class="email-logo">
-            </div>
-            <div class="header-right">
-                <div class="user-info">
-                    <i class="fas fa-user-circle"></i>
-                    <span>你</span>
+    <!-- 新增：外层容器，实现页面居中 -->
+    <div class="page-wrapper">
+        <!-- 邮箱主界面 (直接显示) -->
+        <div class="email-container" id="emailMain">
+            <!-- 顶部导航 -->
+            <div class="email-header">
+                <div class="header-left">
+                    <!-- 新的邮箱Logo -->
+                    <img src="https://p3-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/bb284a03fa5249b09b3339690f380cc9.png~tplv-a9rns2rl98-24:720:720.png?lk3s=8e244e95&rcl=2026011701220809744C7F36DFAD2FCBE9&rrcfp=8a172a1a&x-expires=1769188929&x-signature=WZvhjL9ESbhMZ3%2FUHu2rf7libZY%3D" alt="电子邮箱" class="email-logo">
                 </div>
-                <button class="header-btn">
-                    <i class="fas fa-cog"></i>
-                    <span>设置</span>
-                </button>
-                <button class="header-btn" id="refreshBtn">
-                    <i class="fas fa-sync-alt"></i>
-                    <span>刷新</span>
-                </button>
-            </div>
-        </div>
-
-        <!-- 主体内容 -->
-        <div class="email-main">
-            <!-- 左侧功能栏 -->
-            <div class="sidebar">
-                <button class="compose-btn">
-                    <i class="fas fa-pen-fancy"></i>
-                    <span>写邮件</span>
-                </button>
-                <ul class="menu-list">
-                    <li class="menu-item active">
-                        <span class="menu-icon"><i class="fas fa-inbox"></i></span>
-                        <span>收件箱</span>
-                    </li>
-                    <li class="menu-item">
-                        <span class="menu-icon"><i class="fas fa-paper-plane"></i></span>
-                        <span>已发送</span>
-                    </li>
-                    <li class="menu-item">
-                        <span class="menu-icon"><i class="fas fa-file-alt"></i></span>
-                        <span>草稿箱</span>
-                    </li>
-                    <li class="menu-item">
-                        <span class="menu-icon"><i class="fas fa-trash-alt"></i></span>
-                        <span>已删除</span>
-                    </li>
-                    <li class="menu-item">
-                        <span class="menu-icon"><i class="fas fa-star"></i></span>
-                        <span>星标邮件</span>
-                    </li>
-                    <li class="menu-item">
-                        <span class="menu-icon"><i class="fas fa-ban"></i></span>
-                        <span>垃圾邮件</span>
-                    </li>
-                </ul>
-            </div>
-
-            <!-- 邮件列表区 -->
-            <div class="email-list-area">
-                <div class="list-header">
-                    <div class="search-box">
-                        <i class="fas fa-search" style="color: #adb5bd;"></i>
-                        <input type="text" style="border: none; outline: none; flex: 1; background: transparent;" placeholder="搜索邮件...">
+                <div class="header-right">
+                    <div class="user-info">
+                        <i class="fas fa-user-circle"></i>
+                        <span>你</span>
                     </div>
-                    <button class="header-btn" style="padding: 6px 12px;">
-                        <i class="fas fa-filter"></i>
+                    <button class="header-btn">
+                        <i class="fas fa-cog"></i>
+                        <span>设置</span>
+                    </button>
+                    <button class="header-btn" id="refreshBtn">
+                        <i class="fas fa-sync-alt"></i>
+                        <span>刷新</span>
                     </button>
                 </div>
-                <div class="email-list">
-                    <!-- 核心任务邮件 -->
-                    <div class="email-item unread active" data-email-type="task" id="taskEmail">
-                        <div class="email-sender">
-                            <span>网络清朗公益组织</span>
-                            <span class="email-time">09:25</span>
-                        </div>
-                        <div class="email-subject">本月清朗任务委托</div>
-                        <div class="email-preview">近期存在多起由“参考文献”梗引发的网暴事件，现委托你调查该梗的传播、异化过程...</div>
-                    </div>
-                    <!-- 其他可交互邮件 -->
-                    <div class="email-item" data-email-type="normal">
-                        <div class="email-sender">
-                            <span>微信团队</span>
-                            <span class="email-time">昨天</span>
-                        </div>
-                        <div class="email-subject">微信安全中心验证通知</div>
-                        <div class="email-preview">你申请的微信账号验证已通过，可正常使用所有功能...</div>
-                    </div>
-                    <div class="email-item" data-email-type="normal">
-                        <div class="email-sender">
-                            <span>网络清朗组织</span>
-                            <span class="email-time">周一</span>
-                        </div>
-                        <div class="email-subject">委托完成感谢信</div>
-                        <div class="email-preview">感谢你完成本次网络清朗调查任务，你的工作为网络环境治理提供了重要依据...</div>
-                    </div>
-                    <div class="email-item" data-email-type="normal">
-                        <div class="email-sender">
-                            <span>青年志愿者协会</span>
-                            <span class="email-time">上周</span>
-                        </div>
-                        <div class="email-subject">2025年度行政组及活动组义工招募</div>
-                        <div class="email-preview">2025年度义工招募正式启动，诚邀你加入行政组或活动组，共同参与公益事业...</div>
-                    </div>
-                </div>
             </div>
 
-            <!-- 邮件预览区 -->
-            <div class="email-preview-area" id="previewArea">
-                <!-- 默认显示任务邮件内容 -->
-                <div class="preview-card" id="taskPreview">
-                    <div class="preview-header">
-                        <h2 class="preview-subject">本月清朗任务委托</h2>
-                        <div class="preview-info">
-                            <p><i class="fas fa-paper-plane"></i>发件人：网络清朗公益组织 &lt;qinglang@public.org&gt;</p>
-                            <p><i class="fas fa-clock"></i>时间：2026年1月17日 09:25</p>
-                            <p><i class="fas fa-user"></i>收件人：你 &lt;you@example.com&gt;</p>
+            <!-- 主体内容 -->
+            <div class="email-main">
+                <!-- 左侧功能栏 -->
+                <div class="sidebar">
+                    <button class="compose-btn">
+                        <i class="fas fa-pen-fancy"></i>
+                        <span>写邮件</span>
+                    </button>
+                    <ul class="menu-list">
+                        <li class="menu-item active">
+                            <span class="menu-icon"><i class="fas fa-inbox"></i></span>
+                            <span>收件箱</span>
+                        </li>
+                        <li class="menu-item">
+                            <span class="menu-icon"><i class="fas fa-paper-plane"></i></span>
+                            <span>已发送</span>
+                        </li>
+                        <li class="menu-item">
+                            <span class="menu-icon"><i class="fas fa-file-alt"></i></span>
+                            <span>草稿箱</span>
+                        </li>
+                        <li class="menu-item">
+                            <span class="menu-icon"><i class="fas fa-trash-alt"></i></span>
+                            <span>已删除</span>
+                        </li>
+                        <li class="menu-item">
+                            <span class="menu-icon"><i class="fas fa-star"></i></span>
+                            <span>星标邮件</span>
+                        </li>
+                        <li class="menu-item">
+                            <span class="menu-icon"><i class="fas fa-ban"></i></span>
+                            <span>垃圾邮件</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- 邮件列表区 -->
+                <div class="email-list-area">
+                    <div class="list-header">
+                        <div class="search-box">
+                            <i class="fas fa-search" style="color: #adb5bd;"></i>
+                            <input type="text" style="border: none; outline: none; flex: 1; background: transparent;" placeholder="搜索邮件...">
                         </div>
+                        <button class="header-btn" style="padding: 6px 12px;">
+                            <i class="fas fa-filter"></i>
+                        </button>
                     </div>
-                    <div class="preview-content">
-                        <p>尊敬的网络侦探：</p>
-                        <p>近期存在多起由“参考文献”梗引发的网暴事件，现委托你调查该梗的传播、异化过程，厘清玩梗与网暴的边界，揭露恶意引导行为，为清朗网络提供依据。</p>
-                        <p>近期存在多起由<span class="reference-tag" id="referenceTag">“参考文献”梗</span>引发的网暴事件，现委托你调查该梗的传播、异化过程，厘清玩梗与网暴的边界，揭露恶意引导行为，为清朗网络提供依据。</p>
-                        <!-- 落款右对齐 -->
-                        <div class="email-signature">
-                            <p style="color: #7a67ee; font-weight: 600; margin-bottom: 5px;">网络清朗公益组织</p>
-                            <p style="color: #868e96;">2026年1月17日</p>
+                    <div class="email-list">
+                        <!-- 核心任务邮件 -->
+                        <div class="email-item unread active" data-email-type="task" id="taskEmail">
+                            <div class="email-sender">
+                                <span>网络清朗公益组织</span>
+                                <span class="email-time">09:25</span>
+                            </div>
+                            <div class="email-subject">本月清朗任务委托</div>
+                            <div class="email-preview">近期存在多起由“参考文献”梗引发的网暴事件，现委托你调查该梗的传播、异化过程...</div>
+                        </div>
+                        <!-- 其他可交互邮件 -->
+                        <div class="email-item" data-email-type="normal">
+                            <div class="email-sender">
+                                <span>微信团队</span>
+                                <span class="email-time">昨天</span>
+                            </div>
+                            <div class="email-subject">微信安全中心验证通知</div>
+                            <div class="email-preview">你申请的微信账号验证已通过，可正常使用所有功能...</div>
+                        </div>
+                        <div class="email-item" data-email-type="normal">
+                            <div class="email-sender">
+                                <span>网络清朗组织</span>
+                                <span class="email-time">周一</span>
+                            </div>
+                            <div class="email-subject">委托完成感谢信</div>
+                            <div class="email-preview">感谢你完成本次网络清朗调查任务，你的工作为网络环境治理提供了重要依据...</div>
+                        </div>
+                        <div class="email-item" data-email-type="normal">
+                            <div class="email-sender">
+                                <span>青年志愿者协会</span>
+                                <span class="email-time">上周</span>
+                            </div>
+                            <div class="email-subject">2025年度行政组及活动组义工招募</div>
+                            <div class="email-preview">2025年度义工招募正式启动，诚邀你加入行政组或活动组，共同参与公益事业...</div>
                         </div>
                     </div>
                 </div>
-                <!-- 空预览模板 (默认隐藏) -->
-                <div class="empty-preview" id="emptyPreview" style="display: none;">
-                    <i class="fas fa-envelope-open"></i>
-                    <h3>暂无邮件预览</h3>
-                    <p>该邮件暂无预览内容，如需查看请联系发件人或检查邮件完整性</p>
+
+                <!-- 邮件预览区 -->
+                <div class="email-preview-area" id="previewArea">
+                    <!-- 默认显示任务邮件内容 -->
+                    <div class="preview-card" id="taskPreview">
+                        <div class="preview-header">
+                            <h2 class="preview-subject">本月清朗任务委托</h2>
+                            <div class="preview-info">
+                                <p><i class="fas fa-paper-plane"></i>发件人：网络清朗公益组织 &lt;qinglang@public.org&gt;</p>
+                                <p><i class="fas fa-clock"></i>时间：2026年1月17日 09:25</p>
+                                <p><i class="fas fa-user"></i>收件人：你 &lt;you@example.com&gt;</p>
+                            </div>
+                        </div>
+                        <div class="preview-content">
+                            <p>尊敬的网络侦探：</p>
+                            <p>近期存在多起由“参考文献”梗引发的网暴事件，现委托你调查该梗的传播、异化过程，厘清玩梗与网暴的边界，揭露恶意引导行为，为清朗网络提供依据。</p>
+                            <p>近期存在多起由<span class="reference-tag" id="referenceTag">“参考文献”梗</span>引发的网暴事件，现委托你调查该梗的传播、异化过程，厘清玩梗与网暴的边界，揭露恶意引导行为，为清朗网络提供依据。</p>
+                            <!-- 落款右对齐 -->
+                            <div class="email-signature">
+                                <p style="color: #7a67ee; font-weight: 600; margin-bottom: 5px;">网络清朗公益组织</p>
+                                <p style="color: #868e96;">2026年1月17日</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 空预览模板 (默认隐藏) -->
+                    <div class="empty-preview" id="emptyPreview" style="display: none;">
+                        <i class="fas fa-envelope-open"></i>
+                        <h3>暂无邮件预览</h3>
+                        <p>该邮件暂无预览内容，如需查看请联系发件人或检查邮件完整性</p>
+                    </div>
                 </div>
             </div>
         </div>
