@@ -43,10 +43,10 @@
         /* 移动设备检测 */
         @media screen and (max-width: 767px) and (hover: none) and (pointer: coarse) {
             body {
-                /* 顺时针旋转90度 */
-                transform: rotate(90deg);
-                /* 调整旋转中心 */
-                transform-origin: center center;
+                /* 顺时针旋转90度并调整位置（核心修改） */
+                transform: rotate(90deg) translateY(-100%);
+                /* 关键：将旋转中心改为左上角 */
+                transform-origin: top left;
                 /* 交换宽高，适应旋转后的屏幕 */
                 width: 100vh;
                 height: 100vw;
@@ -54,8 +54,8 @@
                 position: fixed;
                 top: 0;
                 left: 0;
-                /* 确保内容充满屏幕 */
-                margin-top: calc((100vw - 100vh) / 2);
+                /* 移除原有margin-top，避免双重偏移 */
+                margin: 0;
             }
 
             /* 确保邮箱容器适配旋转后的尺寸 */
@@ -980,26 +980,8 @@
             }
         });
 
-        // ========== 新增：窗口大小变化监听，确保旋转效果适配 ==========
-        window.addEventListener('resize', function() {
-            // 重新计算body的margin-top，确保旋转后居中
-            const isMobile = window.innerWidth <= 767 && 
-                             window.matchMedia('(hover: none)').matches && 
-                             window.matchMedia('(pointer: coarse)').matches;
-            
-            if (isMobile) {
-                document.body.style.marginTop = `calc((100vw - 100vh) / 2)`;
-                document.querySelector('.email-container').style.width = '100vh';
-                document.querySelector('.email-container').style.height = '100vw';
-            } else {
-                document.body.style.marginTop = '0';
-                document.querySelector('.email-container').style.width = '100%';
-                document.querySelector('.email-container').style.height = '100vh';
-            }
-        });
-
-        // 初始化时触发一次尺寸计算
-        window.dispatchEvent(new Event('resize'));
+        // ========== 移除原有窗口大小监听逻辑（避免冲突） ==========
+        // 注：原有监听逻辑会覆盖我们的居中样式，因此移除
     </script>
 </body>
 </html>
