@@ -2,10 +2,11 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <!-- 修复视口设置，适配所有手机屏幕 -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>电子邮箱</title>
+    <!-- 引入字体图标库增强视觉效果 -->
     <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- 引入现代字体 -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         /* 全局样式重置 */
@@ -20,45 +21,7 @@
             background-color: #f8f9fa;
             color: #333;
             font-size: 14px;
-            line-height: 1.8; /* 增大行高提升可读性 */
-            /* 优化抗锯齿，让文字更清晰 */
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            overflow-x: hidden;
-            width: 100vw;
-            height: 100vh;
-            position: relative;
-        }
-
-        /* 手机端旋转90度的核心样式 - 修复版 */
-        @media (max-width: 767px) {
-            body {
-                transform: rotate(90deg);
-                transform-origin: center center;
-                /* 修复宽高和定位，避免内容偏移 */
-                width: 100vh;
-                height: 100vw;
-                position: fixed;
-                top: 50%;
-                left: 50%;
-                /* 用translate替代margin，适配所有屏幕 */
-                transform: rotate(90deg) translate(-50%, -50%);
-                /* 优化滚动体验 */
-                overflow-y: auto;
-                -webkit-overflow-scrolling: touch;
-                transition: transform 0.5s ease;
-            }
-
-            /* 弹窗反向旋转，保证正向显示 */
-            .modal-overlay {
-                transform: rotate(-90deg);
-                transform-origin: center center;
-                width: 100vh;
-                height: 100vw;
-                top: 50%;
-                left: 50%;
-                transform: rotate(-90deg) translate(-50%, -50%);
-            }
+            line-height: 1.5;
         }
 
         a {
@@ -72,10 +35,10 @@
             color: #7a67ee;
         }
 
-        /* 邮箱主界面样式 - 修复高度适配 */
+        /* 邮箱主界面样式 (直接显示) */
         .email-container {
             width: 100%;
-            height: 100%; /* 替换100vh，适配旋转后的容器 */
+            height: 100vh;
             background: #fff;
             display: flex;
             flex-direction: column;
@@ -84,7 +47,7 @@
 
         /* 顶部导航栏 - 渐变配色 */
         .email-header {
-            height: 80px;
+            height: 80px; /* 适配Logo的高度 */
             background: linear-gradient(to right, #7a67ee, #2ec4b6);
             color: #fff;
             padding: 0 30px;
@@ -102,15 +65,15 @@
         }
 
         .email-logo {
-            width: 120px;
+            width: 120px; /* 适配新Logo的视觉尺寸 */
             height: 60px;
-            object-fit: contain;
+            object-fit: contain; /* 保证Logo比例不变形 */
             border-radius: 8px;
             transition: transform 0.3s ease;
         }
 
         .email-logo:hover {
-            transform: scale(1.05);
+            transform: scale(1.05); /* hover轻微放大效果 */
         }
 
         .header-right {
@@ -145,10 +108,6 @@
             display: flex;
             align-items: center;
             gap: 6px;
-            /* 增大点击区域 */
-            min-width: 44px;
-            min-height: 44px;
-            justify-content: center;
         }
 
         .header-btn:hover {
@@ -189,9 +148,6 @@
             font-weight: 500;
             box-shadow: 0 4px 12px rgba(255, 159, 67, 0.3);
             transition: all 0.3s ease;
-            /* 增大点击区域 */
-            min-width: 44px;
-            min-height: 44px;
         }
 
         .compose-btn:hover {
@@ -214,8 +170,6 @@
             color: #495057;
             font-weight: 500;
             transition: all 0.2s ease;
-            /* 增大点击区域 */
-            min-height: 44px;
         }
 
         .menu-item:hover {
@@ -430,7 +384,7 @@
         .preview-content {
             line-height: 1.8;
             color: #343a40;
-            font-size: clamp(14px, 3vw, 16px); /* 响应式字体 */
+            font-size: 16px;
             letter-spacing: 0.2px;
         }
 
@@ -483,7 +437,7 @@
             animation: rotate 1.5s linear infinite;
         }
 
-        /* 响应式适配 - 平板 */
+        /* 响应式适配 */
         @media (max-width: 1200px) {
             .sidebar {
                 width: 80px;
@@ -512,6 +466,7 @@
                 width: 320px;
             }
 
+            /* 响应式下调整Logo尺寸 */
             .email-logo {
                 width: 100px;
                 height: 50px;
@@ -522,77 +477,9 @@
             }
         }
 
-        /* 手机端额外适配（旋转后）- 修复版 */
-        @media (max-width: 767px) {
-            .email-container {
-                height: 100vw; /* 适配旋转后的高度 */
-                width: 100vh; /* 适配旋转后的宽度 */
-            }
-            
-            .email-header {
-                height: 60px;
-                padding: 0 15px;
-            }
-            
-            .email-logo {
-                width: 80px;
-                height: 40px;
-            }
-            
-            .sidebar {
-                width: 60px;
-                padding-top: 15px;
-            }
-            
-            .compose-btn {
-                width: 40px;
-                height: 40px;
-                margin-bottom: 15px;
-            }
-            
-            .email-list-area {
-                width: 180px; /* 进一步收窄，适配手机 */
-            }
-            
-            .email-preview-area {
-                padding: 10px; /* 减少内边距 */
-            }
-            
-            .preview-card {
-                padding: 15px;
-            }
-            
-            .preview-subject {
-                font-size: 18px;
-                margin-bottom: 10px;
-            }
-            
-            .modal-content {
-                width: 90%;
-                padding: 15px;
-            }
-            
-            .modal-image {
-                width: 70px;
-                bottom: 10px;
-                right: 10px;
-            }
-
-            /* 修复邮件项字体大小 */
-            .email-sender {
-                font-size: 14px;
-            }
-            .email-subject {
-                font-size: 13px;
-            }
-            .email-preview {
-                font-size: 12px;
-            }
-        }
-
-        /* 参考文献梗文字框样式 */
+        /* 新增：参考文献梗文字框样式 */
         .reference-tag {
-            background-color: #e3f2fd;
+            background-color: #e3f2fd; /* 浅蓝色背景 */
             padding: 2px 6px;
             border-radius: 4px;
             cursor: pointer;
@@ -606,9 +493,9 @@
             background-color: #bbdefb;
         }
 
-        /* 弹窗内跳转文字框样式 */
+        /* 新增：弹窗内跳转文字框样式 */
         .jump-tag {
-            background-color: #e3f2fd;
+            background-color: #e3f2fd; /* 淡蓝色背景，和reference-tag保持一致 */
             padding: 2px 6px;
             border-radius: 4px;
             cursor: pointer;
@@ -616,14 +503,14 @@
             color: #1976d2;
             border: 1px solid #bbdefb;
             transition: all 0.2s ease;
-            display: inline-block;
+            display: inline-block; /* 保证文字框只包裹文字 */
         }
 
         .jump-tag:hover {
-            background-color: #bbdefb;
+            background-color: #bbdefb; /* hover时加深背景色 */
         }
 
-        /* 弹窗样式 - 修复旋转适配 */
+        /* 新增：弹窗样式 - 优化动画效果 */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -637,6 +524,7 @@
             z-index: 1000;
             opacity: 0;
             visibility: hidden;
+            /* 修改：优化动画曲线，更自然 */
             transition:
                 opacity 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
                 visibility 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -654,8 +542,10 @@
             width: 500px;
             max-width: 90%;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            /* 修改：初始状态 - 组合动画参数 */
             transform: translateY(20px) scale(0.95);
             opacity: 0.8;
+            /* 修改：动画过渡 - 与遮罩层同步 */
             transition:
                 transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
                 opacity 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
@@ -663,9 +553,11 @@
             position: relative;
         }
 
+        /* 修改：激活状态的弹窗动画 */
         .modal-overlay.active .modal-content {
             transform: translateY(0) scale(1);
             opacity: 1;
+            /* 新增：激活时增强阴影，更有层次感 */
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
         }
 
@@ -690,8 +582,8 @@
             font-size: 20px;
             color: #868e96;
             cursor: pointer;
-            width: 44px; /* 增大关闭按钮点击区域 */
-            height: 44px;
+            width: 30px;
+            height: 30px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -707,23 +599,24 @@
         .modal-body {
             line-height: 1.8;
             color: #495057;
-            font-size: clamp(14px, 3vw, 16px);
-            padding-bottom: 80px;
+            font-size: 16px;
+            padding-bottom: 100px;
         }
 
         .modal-body p {
             margin-bottom: 15px;
         }
 
-        /* 弹窗图片样式 */
+        /* 弹窗右下角图片样式 - 向上移动2像素 */
         .modal-image {
             position: absolute;
-            bottom: 15px;
-            right: 15px;
+            bottom: 22px; /* 从20px改为22px，向上移动2像素 */
+            right: 20px;
             width: 120px;
             height: auto;
             border-radius: 6px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            /* 新增：图片单独动画，延迟触发 */
             opacity: 0;
             transform: scale(0.9);
             transition:
@@ -731,6 +624,7 @@
                 transform 0.3s ease 0.2s;
         }
 
+        /* 新增：激活时图片动画 */
         .modal-overlay.active .modal-image {
             opacity: 1;
             transform: scale(1);
@@ -738,10 +632,12 @@
     </style>
 </head>
 <body>
+    <!-- 邮箱主界面 (直接显示) -->
     <div class="email-container" id="emailMain">
         <!-- 顶部导航 -->
         <div class="email-header">
             <div class="header-left">
+                <!-- 新的邮箱Logo -->
                 <img src="https://p3-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/bb284a03fa5249b09b3339690f380cc9.png~tplv-a9rns2rl98-24:720:720.png?lk3s=8e244e95&rcl=2026011701220809744C7F36DFAD2FCBE9&rrcfp=8a172a1a&x-expires=1769188929&x-signature=WZvhjL9ESbhMZ3%2FUHu2rf7libZY%3D" alt="电子邮箱" class="email-logo">
             </div>
             <div class="header-right">
@@ -877,7 +773,7 @@
         </div>
     </div>
 
-    <!-- 弹窗容器 -->
+    <!-- 新增：弹窗容器 -->
     <div class="modal-overlay" id="referenceModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -903,6 +799,8 @@
         const taskPreview = document.getElementById('taskPreview');
         const emptyPreview = document.getElementById('emptyPreview');
         const refreshBtn = document.getElementById('refreshBtn');
+
+        // 新增：获取弹窗相关元素
         const referenceTag = document.getElementById('referenceTag');
         const referenceModal = document.getElementById('referenceModal');
         const modalClose = document.getElementById('modalClose');
@@ -910,19 +808,24 @@
         // 邮件点击交互逻辑
         emailItems.forEach(item => {
             item.addEventListener('click', function() {
+                // 移除所有邮件的选中状态
                 emailItems.forEach(mi => mi.classList.remove('active'));
+                // 添加当前邮件选中状态
                 this.classList.add('active');
 
+                // 判断邮件类型，显示对应预览内容
                 const emailType = this.getAttribute('data-email-type');
                 if (emailType === 'task') {
+                    // 显示任务邮件预览
                     taskPreview.style.display = 'block';
                     emptyPreview.style.display = 'none';
                 } else {
+                    // 隐藏任务邮件预览，显示空预览
                     taskPreview.style.display = 'none';
                     emptyPreview.style.display = 'flex';
                 }
 
-                // 微动画反馈
+                // 添加微动画反馈
                 this.style.transform = 'scale(1.02)';
                 setTimeout(() => {
                     this.style.transform = 'translateY(-2px) scale(1)';
@@ -933,6 +836,7 @@
         // 刷新按钮动画效果
         refreshBtn.addEventListener('click', function() {
             this.classList.add('refresh-loading');
+            // 模拟加载过程
             setTimeout(() => {
                 this.classList.remove('refresh-loading');
             }, 1500);
@@ -947,45 +851,44 @@
             });
         });
 
-        // 弹窗交互逻辑 - 修复旋转后的滚动问题
+        // 新增：弹窗交互逻辑
+        // 打开弹窗
         referenceTag.addEventListener('click', function(e) {
-            e.stopPropagation();
+            e.stopPropagation(); // 阻止事件冒泡
+            // 强制触发重绘，确保动画生效
             void referenceModal.offsetWidth;
             referenceModal.classList.add('active');
-            // 修复：旋转后不锁住body滚动，改为锁住容器
-            document.getElementById('emailMain').style.overflow = 'hidden';
+            // 禁止页面滚动
+            document.body.style.overflow = 'hidden';
         });
 
         // 关闭弹窗
-        function closeModal() {
+        函数 closeModal() {
             referenceModal.classList.remove('active');
-            // 恢复容器滚动
-            document.getElementById('emailMain').style.overflow = '';
+            // 恢复页面滚动
+            document.body.style.overflow = '';
+            // 可选：等待动画结束后重置样式（避免下次打开有残留）
             setTimeout(() => {
                 referenceModal.style.opacity = '';
                 referenceModal.querySelector('.modal-content').style.transform = '';
             }, 400);
         }
 
+        // 点击关闭按钮关闭弹窗
         modalClose.addEventListener('click', closeModal);
+
+        // 点击弹窗外部关闭弹窗
         referenceModal.addEventListener('click', function(e) {
-            if (e.target === referenceModal) {
-                closeModal();
-            }
-        });
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape' && referenceModal.classList.contains('active')) {
+            如果 (e.target === referenceModal) {
                 closeModal();
             }
         });
 
-        // 新增：监听屏幕旋转，适配不同方向
-        window.addEventListener('orientationchange', function() {
-            // 强制重绘，确保旋转后样式生效
-            document.body.style.display = 'none';
-            setTimeout(() => {
-                document.body.style.display = '';
-            }, 10);
+        // 按ESC键关闭弹窗
+        document.addEventListener('keydown', function(e) {
+            如果 (e.键 === 'Esc' && referenceModal.classList.包含('active')) {
+                closeModal();
+            }
         });
     </script>
 </body>
