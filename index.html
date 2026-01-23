@@ -22,10 +22,6 @@
             color: #333;
             font-size: 14px;
             line-height: 1.5;
-            /* 防止旋转后出现滚动条 */
-            overflow: hidden;
-            height: 100vh;
-            width: 100vw;
         }
 
         a {
@@ -37,32 +33,6 @@
         a:hover {
             text-decoration: none;
             color: #7a67ee;
-        }
-
-        /* ========== 新增：移动端旋转核心样式 ========== */
-        /* 移动设备检测 */
-        @media screen and (max-width: 767px) and (hover: none) and (pointer: coarse) {
-            body {
-                /* 顺时针旋转90度并调整位置（核心修改） */
-                transform: rotate(90deg) translateY(-100%);
-                /* 关键：将旋转中心改为左上角 */
-                transform-origin: top left;
-                /* 交换宽高，适应旋转后的屏幕 */
-                width: 100vh;
-                height: 100vw;
-                /* 定位调整，避免内容偏移 */
-                position: fixed;
-                top: 0;
-                left: 0;
-                /* 移除原有margin-top，避免双重偏移 */
-                margin: 0;
-            }
-
-            /* 确保邮箱容器适配旋转后的尺寸 */
-            .email-container {
-                width: 100vh !important;
-                height: 100vw !important;
-            }
         }
 
         /* 邮箱主界面样式 (直接显示) */
@@ -507,65 +477,6 @@
             }
         }
 
-        /* 优化移动端旋转后的小屏幕适配 */
-        @media screen and (max-width: 480px) and (hover: none) and (pointer: coarse) {
-            .email-header {
-                padding: 0 15px;
-                height: 60px;
-            }
-            
-            .email-logo {
-                width: 80px;
-                height: 40px;
-            }
-            
-            .user-info {
-                margin-right: 10px;
-                font-size: 13px;
-            }
-            
-            .header-btn {
-                padding: 6px 10px;
-                font-size: 12px;
-            }
-            
-            .sidebar {
-                width: 60px;
-                padding-top: 15px;
-            }
-            
-            .compose-btn {
-                width: 40px;
-                height: 40px;
-                margin-bottom: 20px;
-            }
-            
-            .email-list-area {
-                width: 200px;
-            }
-            
-            .email-item {
-                padding: 10px 15px;
-            }
-            
-            .preview-card {
-                padding: 20px;
-            }
-            
-            .preview-subject {
-                font-size: 20px;
-                margin-bottom: 15px;
-            }
-            
-            .preview-content {
-                font-size: 14px;
-            }
-            
-            .email-preview-area {
-                padding: 15px;
-            }
-        }
-
         /* 新增：参考文献梗文字框样式 */
         .reference-tag {
             background-color: #e3f2fd; /* 浅蓝色背景 */
@@ -844,6 +755,7 @@
                     </div>
                     <div class="preview-content">
                         <p>尊敬的网络侦探：</p>
+                        <p>近期存在多起由“参考文献”梗引发的网暴事件，现委托你调查该梗的传播、异化过程，厘清玩梗与网暴的边界，揭露恶意引导行为，为清朗网络提供依据。</p>
                         <p>近期存在多起由<span class="reference-tag" id="referenceTag">“参考文献”梗</span>引发的网暴事件，现委托你调查该梗的传播、异化过程，厘清玩梗与网暴的边界，揭露恶意引导行为，为清朗网络提供依据。</p>
                         <!-- 落款右对齐 -->
                         <div class="email-signature">
@@ -979,9 +891,6 @@
                 closeModal();
             }
         });
-
-        // ========== 移除原有窗口大小监听逻辑（避免冲突） ==========
-        // 注：原有监听逻辑会覆盖我们的居中样式，因此移除
     </script>
 </body>
 </html>
