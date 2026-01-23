@@ -22,6 +22,10 @@
             color: #333;
             font-size: 14px;
             line-height: 1.5;
+            /* 防止旋转后出现滚动条 */
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
         }
 
         a {
@@ -33,6 +37,32 @@
         a:hover {
             text-decoration: none;
             color: #7a67ee;
+        }
+
+        /* ========== 新增：移动端旋转核心样式 ========== */
+        /* 移动设备检测 */
+        @media screen and (max-width: 767px) and (hover: none) and (pointer: coarse) {
+            body {
+                /* 顺时针旋转90度 */
+                transform: rotate(90deg);
+                /* 调整旋转中心 */
+                transform-origin: center center;
+                /* 交换宽高，适应旋转后的屏幕 */
+                width: 100vh;
+                height: 100vw;
+                /* 定位调整，避免内容偏移 */
+                position: fixed;
+                top: 0;
+                left: 0;
+                /* 确保内容充满屏幕 */
+                margin-top: calc((100vw - 100vh) / 2);
+            }
+
+            /* 确保邮箱容器适配旋转后的尺寸 */
+            .email-container {
+                width: 100vh !important;
+                height: 100vw !important;
+            }
         }
 
         /* 邮箱主界面样式 (直接显示) */
@@ -437,7 +467,7 @@
             animation: rotate 1.5s linear infinite;
         }
 
-        /* 响应式适配 */
+        /* 响应式适配 - 优化移动端旋转后的显示 */
         @media (max-width: 1200px) {
             .sidebar {
                 width: 80px;
@@ -474,6 +504,65 @@
 
             .email-header {
                 height: 70px;
+            }
+        }
+
+        /* 优化移动端旋转后的小屏幕适配 */
+        @media screen and (max-width: 480px) and (hover: none) and (pointer: coarse) {
+            .email-header {
+                padding: 0 15px;
+                height: 60px;
+            }
+            
+            .email-logo {
+                width: 80px;
+                height: 40px;
+            }
+            
+            .user-info {
+                margin-right: 10px;
+                font-size: 13px;
+            }
+            
+            .header-btn {
+                padding: 6px 10px;
+                font-size: 12px;
+            }
+            
+            .sidebar {
+                width: 60px;
+                padding-top: 15px;
+            }
+            
+            .compose-btn {
+                width: 40px;
+                height: 40px;
+                margin-bottom: 20px;
+            }
+            
+            .email-list-area {
+                width: 200px;
+            }
+            
+            .email-item {
+                padding: 10px 15px;
+            }
+            
+            .preview-card {
+                padding: 20px;
+            }
+            
+            .preview-subject {
+                font-size: 20px;
+                margin-bottom: 15px;
+            }
+            
+            .preview-content {
+                font-size: 14px;
+            }
+            
+            .email-preview-area {
+                padding: 15px;
             }
         }
 
@@ -863,7 +952,7 @@
         });
 
         // 关闭弹窗
-        函数 closeModal() {
+        function closeModal() {
             referenceModal.classList.remove('active');
             // 恢复页面滚动
             document.body.style.overflow = '';
@@ -879,17 +968,38 @@
 
         // 点击弹窗外部关闭弹窗
         referenceModal.addEventListener('click', function(e) {
-            如果 (e.target === referenceModal) {
+            if (e.target === referenceModal) {
                 closeModal();
             }
         });
 
         // 按ESC键关闭弹窗
         document.addEventListener('keydown', function(e) {
-            如果 (e.键 === 'Esc' && referenceModal.classList.包含('active')) {
+            if (e.key === 'Escape' && referenceModal.classList.contains('active')) {
                 closeModal();
             }
         });
+
+        // ========== 新增：窗口大小变化监听，确保旋转效果适配 ==========
+        window.addEventListener('resize', function() {
+            // 重新计算body的margin-top，确保旋转后居中
+            const isMobile = window.innerWidth <= 767 && 
+                             window.matchMedia('(hover: none)').matches && 
+                             window.matchMedia('(pointer: coarse)').matches;
+            
+            if (isMobile) {
+                document.body.style.marginTop = `calc((100vw - 100vh) / 2)`;
+                document.querySelector('.email-container').style.width = '100vh';
+                document.querySelector('.email-container').style.height = '100vw';
+            } else {
+                document.body.style.marginTop = '0';
+                document.querySelector('.email-container').style.width = '100%';
+                document.querySelector('.email-container').style.height = '100vh';
+            }
+        });
+
+        // 初始化时触发一次尺寸计算
+        window.dispatchEvent(new Event('resize'));
     </script>
 </body>
 </html>
