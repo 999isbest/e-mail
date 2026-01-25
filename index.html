@@ -772,17 +772,17 @@
 
         /* 弹窗右下角图片样式 - 向上移动2像素 */
         .modal-image {
-            位置: 绝对;
-            底部: 22像素; /* 从20像素改为22像素，向上移动2像素 */
-            右: 20像素;
-            宽度: 120像素;
-            高度: 自动;
+            position: absolute;
+            bottom: 22px; /* 从20px改为22px，向上移动2像素 */
+            right: 20px;
+            width: 120px;
+            height: auto;
             border-radius: 6px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             /* 新增：图片单独动画，延迟触发 */
             opacity: 0;
             transform: scale(0.9);
-            过渡:
+            transition:
                 opacity 0.3s ease 0.2s,
                 transform 0.3s ease 0.2s;
             max-width: 100px; /* 限制图片宽度 */
@@ -865,7 +865,7 @@
                     </div>
                     <button class="header-btn" style="padding: 6px 12px;">
                         <i class="fas fa-filter"></i>
-                    </按钮>
+                    </button>
                 </div>
                 <div class="email-list">
                     <!-- 核心任务邮件 -->
@@ -899,8 +899,8 @@
                             <span>青年志愿者协会</span>
                             <span class="email-time">上周</span>
                         </div>
-                        <div class="email-subject">2025年度行政组及活动组志愿者招募</div>
-                        <div class="email-preview">2025年度志愿者招募正式启动，诚邀你加入行政组或活动组，共同参与公益事业...</div>
+                        <div class="email-subject">2025年度行政组及活动组义工招募</div>
+                        <div class="email-preview">2025年度义工招募正式启动，诚邀你加入行政组或活动组，共同参与公益事业...</div>
                     </div>
                 </div>
             </div>
@@ -913,17 +913,18 @@
                         <h2 class="preview-subject">本月清朗任务委托</h2>
                         <div class="preview-info">
                             <p><i class="fas fa-paper-plane"></i>发件人：网络清朗公益组织 &lt;qinglang@public.org&gt;</p>
-                            <p><i class="fas fa-clock"></i>时间：2026年4月17日 09:25</p>
+                            <p><i class="fas fa-clock"></i>时间：2026年1月17日 09:25</p>
                             <p><i class="fas fa-user"></i>收件人：你 &lt;you@example.com&gt;</p>
                         </div>
                     </div>
                     <div class="preview-content">
                         <p>尊敬的网络侦探：</p>
+                        <p>近期存在多起由“参考文献”梗引发的网暴事件，现委托你调查该梗的传播、异化过程，厘清玩梗与网暴的边界，揭露恶意引导行为，为清朗网络提供依据。</p>
                         <p>近期存在多起由<span class="reference-tag" id="referenceTag">“参考文献”梗</span>引发的网暴事件，现委托你调查该梗的传播、异化过程，厘清玩梗与网暴的边界，揭露恶意引导行为，为清朗网络提供依据。</p>
                         <!-- 落款右对齐 -->
                         <div class="email-signature">
                             <p style="color: #7a67ee; font-weight: 600; margin-bottom: 5px;">网络清朗公益组织</p>
-                            <p style="color: #868e96;">2026年4月17日</p>
+                            <p style="color: #868e96;">2026年1月17日</p>
                         </div>
                     </div>
                 </div>
@@ -1023,7 +1024,7 @@
             void referenceModal.offsetWidth;
             referenceModal.classList.add('active');
             // 禁止页面滚动
-            文档.主体.样式.溢出 = ‘隐藏’;
+            document.body.style.overflow = 'hidden';
         });
 
         // 关闭弹窗
@@ -1043,14 +1044,14 @@
 
         // 点击弹窗外部关闭弹窗
         referenceModal.addEventListener('click', function(e) {
-            如果(e.target===参考模态){
+            if (e.target === referenceModal) {
                 closeModal();
             }
         });
 
         // 按ESC键关闭弹窗
-        文档.addEventListener(‘keydown’, 函数(e) {
-            如果 (e.key === 'Escape' && referenceModal.classList.包含('active')) {
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && referenceModal.classList.contains('active')) {
                 closeModal();
             }
         });
@@ -1060,6 +1061,6 @@
             // 强制重绘，防止布局错乱
             document.body.style.overflowX = 'hidden';
         });
-    </脚本>
+    </script>
 </body>
-        </html>
+</html>
