@@ -495,12 +495,12 @@
                 height: 70px;
                 padding: 0 15px; /* 减小内边距 */
             }
-
+            
             .user-info {
                 margin-right: 10px; /* 减小间距 */
                 font-size: 14px;
             }
-
+            
             .header-btn {
                 padding: 6px 10px; /* 减小按钮尺寸 */
                 margin-left: 8px;
@@ -514,12 +514,12 @@
             html, body {
                 overflow-x: hidden !important;
             }
-
+            
             /* 重新布局 - 堆叠显示 */
             .email-main {
                 flex-direction: column;
             }
-
+            
             .sidebar {
                 width: 100%;
                 height: auto;
@@ -527,72 +527,78 @@
                 border-right: none;
                 border-bottom: 1px solid #e9ecef;
             }
-
+            
             .compose-btn {
                 margin: 0 auto 15px;
                 width: 50px;
                 height: 50px;
                 border-radius: 50%;
             }
-
+            
             .menu-list {
                 display: flex;
                 overflow-x: auto;
                 padding: 0 15px;
                 gap: 5px;
             }
-
+            
             .menu-item {
                 padding: 10px 15px;
                 white-space: nowrap;
                 margin-bottom: 0;
             }
-
+            
             .email-list-area {
                 width: 100%;
                 border-right: none;
                 border-bottom: 1px solid #e9ecef;
                 max-height: 300px;
             }
-
+            
             .search-box {
                 width: 100%;
                 max-width: 200px;
             }
-
+            
             .email-preview-area {
                 padding: 15px;
             }
-
+            
             .preview-card {
                 padding: 20px;
             }
-
+            
             .preview-subject {
                 font-size: 20px;
                 margin-bottom: 15px;
             }
-
+            
             .preview-header {
                 margin-bottom: 20px;
                 padding-bottom: 15px;
             }
-
+            
             .preview-content {
                 font-size: 14px;
             }
-
-            /* 弹窗适配 - 移除了modal-image的移动端适配样式 */
+            
+            /* 弹窗适配 */
             .modal-content {
                 width: 95%;
                 padding: 20px;
                 max-height: 90vh;
                 overflow-y: auto;
             }
-
+            
             .modal-body {
                 padding-bottom: 80px;
                 font-size: 14px;
+            }
+            
+            .modal-image {
+                width: 80px;
+                bottom: 15px;
+                right: 15px;
             }
         }
 
@@ -602,28 +608,28 @@
                 height: 60px;
                 padding: 0 10px;
             }
-
+            
             .email-logo {
                 width: 80px;
                 height: 40px;
             }
-
+            
             .user-info {
                 display: none; /* 隐藏用户信息 */
             }
-
+            
             .list-header {
                 padding: 10px 15px;
             }
-
+            
             .email-item {
                 padding: 12px 15px;
             }
-
+            
             .empty-preview i {
                 font-size: 40px;
             }
-
+            
             .empty-preview h3 {
                 font-size: 18px;
             }
@@ -882,19 +888,19 @@
                     </div>
                     <div class="email-item" data-email-type="normal">
                         <div class="email-sender">
-                            <span>网络清朗公益组织</span>
-                            <span class="email-time">2026年3月12日</span>
+                            <span>网络清朗组织</span>
+                            <span class="email-time">周一</span>
                         </div>
-                        <div class="email-subject">本月委托完成感谢信</div>
-                        <div class="email-preview">感谢你完成本月网络清朗调查任务，你的工作为网络环境治理提供了重要依据...</div>
+                        <div class="email-subject">委托完成感谢信</div>
+                        <div class="email-preview">感谢你完成本次网络清朗调查任务，你的工作为网络环境治理提供了重要依据...</div>
                     </div>
                     <div class="email-item" data-email-type="normal">
                         <div class="email-sender">
                             <span>青年志愿者协会</span>
-                            <span class="email-time">2026年2月21日</span>
+                            <span class="email-time">上周</span>
                         </div>
-                        <div class="email-subject">2026年度行政组及活动组义工招募</div>
-                        <div class="email-preview">2026年度义工招募正式启动，诚邀你加入行政组或活动组，共同参与公益事业...</div>
+                        <div class="email-subject">2025年度行政组及活动组义工招募</div>
+                        <div class="email-preview">2025年度义工招募正式启动，诚邀你加入行政组或活动组，共同参与公益事业...</div>
                     </div>
                 </div>
             </div>
@@ -907,17 +913,18 @@
                         <h2 class="preview-subject">本月清朗任务委托</h2>
                         <div class="preview-info">
                             <p><i class="fas fa-paper-plane"></i>发件人：网络清朗公益组织 &lt;qinglang@public.org&gt;</p>
-                            <p><i class="fas fa-clock"></i>时间：2026年4月17日 09:25</p>
+                            <p><i class="fas fa-clock"></i>时间：2026年1月17日 09:25</p>
                             <p><i class="fas fa-user"></i>收件人：你 &lt;you@example.com&gt;</p>
                         </div>
                     </div>
                     <div class="preview-content">
                         <p>尊敬的网络侦探：</p>
+                        <p>近期存在多起由“参考文献”梗引发的网暴事件，现委托你调查该梗的传播、异化过程，厘清玩梗与网暴的边界，揭露恶意引导行为，为清朗网络提供依据。</p>
                         <p>近期存在多起由<span class="reference-tag" id="referenceTag">“参考文献”梗</span>引发的网暴事件，现委托你调查该梗的传播、异化过程，厘清玩梗与网暴的边界，揭露恶意引导行为，为清朗网络提供依据。</p>
                         <!-- 落款右对齐 -->
                         <div class="email-signature">
                             <p style="color: #7a67ee; font-weight: 600; margin-bottom: 5px;">网络清朗公益组织</p>
-                            <p style="color: #868e96;">2026年4月17日</p>
+                            <p style="color: #868e96;">2026年1月17日</p>
                         </div>
                     </div>
                 </div>
@@ -1048,7 +1055,7 @@
                 closeModal();
             }
         });
-
+        
         // 新增：窗口大小变化时重新计算布局
         window.addEventListener('resize', function() {
             // 强制重绘，防止布局错乱
