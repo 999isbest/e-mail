@@ -75,54 +75,13 @@
             object-fit: contain; /* 保证Logo比例不变形 */
             border-radius: 8px;
             transition: transform 0.3s ease;
-            /* 新增：图片加载占位样式 */
-            background: #f5f7fa;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        /* 新增：图片加载中占位符 */
-        .img-placeholder {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #f5f7fa;
+            /* 新增：图片加载失败时的背景样式 */
+            background-color: rgba(255,255,255,0.2);
             display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 1;
-        }
-        
-        .img-placeholder i {
-            color: #adb5bd;
-            font-size: 24px;
-            animation: pulse 1.5s infinite ease-in-out;
-        }
-        
-        @keyframes pulse {
-            0% { opacity: 0.5; }
-            50% { opacity: 1; }
-            100% { opacity: 0.5; }
-        }
-        
-        /* 图片加载完成后隐藏占位符 */
-        .email-logo.loaded .img-placeholder,
-        .modal-image.loaded .img-placeholder {
-            display: none;
-        }
-        
-        /* 图片加载失败降级样式 */
-        .email-logo.error,
-        .modal-image.error {
-            background: #f8d7da;
-            color: #721c24;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            text-align: center;
+            color: white;
+            font-weight: bold;
         }
 
         .email-logo:hover {
@@ -834,10 +793,12 @@
                 opacity 0.3s ease 0.2s,
                 transform 0.3s ease 0.2s;
             max-width: 100px; /* 限制图片宽度 */
-            /* 新增：图片加载占位样式 */
-            background: #f5f7fa;
-            position: relative;
-            overflow: hidden;
+            /* 新增：图片加载失败时的样式 */
+            background-color: #f8f9fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6c757d;
         }
 
         /* 新增：激活时图片动画 */
@@ -853,18 +814,13 @@
         <!-- 顶部导航 -->
         <div class="email-header">
             <div class="header-left">
-                <!-- 新的邮箱Logo - 优化图片加载 -->
-                <div class="email-logo" id="logoContainer">
-                    <div class="img-placeholder">
-                        <i class="fas fa-envelope"></i>
-                    </div>
-                    <img src="https://p3-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/bb284a03fa5249b09b3339690f380cc9.png~tplv-a9rns2rl98-24:720:720.png?lk3s=8e244e95&rcl=2026011701220809744C7F36DFAD2FCBE9&rrcfp=8a172a1a&x-expires=1769188929&x-signature=WZvhjL9ESbhMZ3%2FUHu2rf7libZY%3D" 
-                         alt="电子邮箱" 
-                         loading="eager"  <!-- Logo优先加载 -->
-                         decoding="async"
-                         onload="this.parentElement.classList.add('loaded')"
-                         onerror="this.parentElement.classList.add('error'); this.parentElement.innerHTML='加载失败'">
-                </div>
+                <!-- 替换为稳定的公开图片链接 -->
+                <img 
+                    src="https://picsum.photos/120/60?email-logo" 
+                    alt="电子邮箱" 
+                    class="email-logo"
+                    onerror="this.src='https://picsum.photos/120/60?fallback-logo'; this.alt='邮箱Logo'"
+                >
             </div>
             <div class="header-right">
                 <div class="user-info">
@@ -1012,18 +968,13 @@
                 <p>“参考文献”梗最初起源于学术圈，是网友们对学术论文中严谨标注参考文献格式的一种趣味化模仿，常用于网络讨论中要求对方提供观点的依据或来源。</p>
                 <p>当某篇帖子内容逻辑跳跃、难以理解或故意夸张时，网友们会用“标记一处参考文献”<span class="jump-tag" onclick="window.location.href='https://999isbest.github.io/Forum-detail-page-simulation/'">“震撼首发”</span>等评论回应，并模仿学术引用格式标注来源。</p>
             </div>
-            <!-- 企鹅图片 - 优化加载 -->
-            <div class="modal-image" id="modalImageContainer">
-                <div class="img-placeholder">
-                    <i class="fas fa-image"></i>
-                </div>
-                <img src="https://p11-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/b67ebc8dfe91415b98708a1d75880f12.jpg~tplv-a9rns2rl98-24:720:720.image?lk3s=8e244e95&rcl=20260120034314BB81741E9B866CEC7485&rrcfp=8a172a1a&x-expires=1769456595&x-signature=U98wrKLcCmcAj9xjIuoISGjcXrs%3D" 
-                     alt="标记一处参考文献" 
-                     loading="lazy"  <!-- 懒加载，弹窗打开时才加载 -->
-                     decoding="async"
-                     onload="this.parentElement.classList.add('loaded')"
-                     onerror="this.parentElement.classList.add('error'); this.parentElement.innerHTML='图片加载失败'">
-            </div>
+            <!-- 替换为稳定的公开图片链接，并添加错误处理 -->
+            <img 
+                src="https://picsum.photos/100/100?penguin" 
+                alt="标记一处参考文献" 
+                class="modal-image"
+                onerror="this.src='https://picsum.photos/100/100?fallback-pic'; this.alt='参考文献梗示例图'"
+            >
         </div>
     </div>
 
@@ -1040,12 +991,7 @@
         const referenceTag = document.getElementById('referenceTag');
         const referenceModal = document.getElementById('referenceModal');
         const modalClose = document.getElementById('modalClose');
-        
-        // 新增：图片加载优化相关变量
-        const logoContainer = document.getElementById('logoContainer');
-        const modalImageContainer = document.getElementById('modalImageContainer');
-        const modalImage = modalImageContainer.querySelector('img');
-        
+
         // 邮件点击交互逻辑
         emailItems.forEach(item => {
             item.addEventListener('click', function() {
@@ -1101,11 +1047,6 @@
             referenceModal.classList.add('active');
             // 禁止页面滚动
             document.body.style.overflow = 'hidden';
-            
-            // 新增：弹窗打开时才开始加载图片（懒加载）
-            if (modalImage && !modalImage.src && modalImage.dataset.src) {
-                modalImage.src = modalImage.dataset.src;
-            }
         });
 
         // 关闭弹窗
@@ -1142,59 +1083,6 @@
             // 强制重绘，防止布局错乱
             document.body.style.overflowX = 'hidden';
         });
-        
-        // 新增：图片加载优化函数
-        function optimizeImageLoading() {
-            // 1. 预加载关键图片（Logo）
-            const logoImg = logoContainer.querySelector('img');
-            if (logoImg && !logoImg.complete) {
-                // 添加加载超时处理
-                setTimeout(() => {
-                    if (!logoContainer.classList.contains('loaded')) {
-                        logoContainer.classList.add('error');
-                        logoContainer.innerHTML = '加载超时';
-                    }
-                }, 10000); // 10秒超时
-            }
-            
-            // 2. 弹窗图片懒加载处理
-            if (modalImage) {
-                // 初始不加载图片，只存储地址
-                modalImage.dataset.src = modalImage.src;
-                modalImage.src = ''; // 清空src，避免立即加载
-            }
-            
-            // 3. 网络状况检测，降级处理
-            if (navigator.connection) {
-                const connection = navigator.connection;
-                // 如果是2G/3G网络，使用更低质量的图片
-                if (connection.effectiveType.includes('2g') || connection.effectiveType.includes('3g')) {
-                    console.log('弱网环境，使用低质量图片');
-                    // 这里可以替换为低分辨率图片地址
-                }
-            }
-        }
-        
-        // 页面加载完成后执行优化
-        window.addEventListener('load', optimizeImageLoading);
-        
-        // 新增：图片加载重试功能
-        window.reloadImages = function() {
-            // 重新加载Logo
-            const logoImg = logoContainer.querySelector('img');
-            if (logoImg) {
-                logoContainer.classList.remove('error', 'loaded');
-                logoContainer.innerHTML = '<div class="img-placeholder"><i class="fas fa-envelope"></i></div>' + logoImg.outerHTML;
-            }
-            
-            // 重新加载弹窗图片
-            if (modalImage) {
-                modalImageContainer.classList.remove('error', 'loaded');
-                modalImageContainer.innerHTML = '<div class="img-placeholder"><i class="fas fa-image"></i></div>' + modalImage.outerHTML;
-                modalImage.dataset.src = modalImage.src;
-                modalImage.src = '';
-            }
-        }
     </script>
 </body>
 </html>
